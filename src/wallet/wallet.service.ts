@@ -1,14 +1,71 @@
 import { Injectable } from '@nestjs/common';
+import { BitcoinService } from 'src/bitcoin/bitcoin.service';
 
 @Injectable()
 export class WalletService {
-  createWallet() {}
+  constructor(private bitcoinService: BitcoinService) {}
+  async createWallet({
+    wallet_id,
+    passphrase,
+  }: {
+    wallet_id: string;
+    passphrase: string;
+  }) {
+    try {
+      const result = await this.bitcoinService.createWallet({
+        wallet_id,
+        passphrase,
+      });
 
-  getWalletAddress() {}
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  sendTransaction() {}
+  async getWalletAddress(wallet_id: string) {
+    try {
+      const result = await this.bitcoinService.getWalletAddress(wallet_id);
+      return result;
+    } catch (error) {}
+  }
 
-  getWalletBalance() {}
+  async getWalletInfo(wallet_id: string) {
+    try {
+      const result = await this.bitcoinService.getWalletInfo(wallet_id);
+      return result;
+    } catch (error) {}
+  }
 
-  getWalletTransactions() {}
+  async getBalance(wallet_id: string) {
+    try {
+      const result = await this.bitcoinService.getBalance(wallet_id);
+      return result;
+    } catch (error) {}
+  }
+
+  async getPrivateKey({ wallet_id, address, passphrase }) {
+    const result = await this.bitcoinService.getPrivateKeyByAddress({
+      wallet_id,
+      address,
+      passphrase,
+    });
+    return result;
+  }
+
+  sendBTCtoAddress() {
+    console.log('Send BTC');
+  }
+
+  getTransactions() {
+    console.log('Get transactions');
+  }
+
+  getRawTransaction(id) {
+    console.log('Get raw transactions');
+  }
+
+  decodeRawTransaction(hex) {
+    console.log('Decode raw transaction');
+  }
 }

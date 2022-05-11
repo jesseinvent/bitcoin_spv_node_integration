@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class SendTransaction {
+export class GetWalletBalance {
   @IsString()
   wallet_id: string;
 }

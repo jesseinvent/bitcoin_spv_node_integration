@@ -1,33 +1,54 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { BitcoinService } from 'src/bitcoin/bitcoin.service';
+import { GetPrivateKey } from 'src/bitcoin/interfaces/getPrivateKey.interface';
+import { GetWalletBalance } from './dto/getBalance.dto';
+import { GetWalletAddress } from './dto/getwalletAddess.dto';
+import { GetWalletInfo } from './dto/getWalletInfo.dto';
 import { SendTransaction } from './dto/sendTransaction.dto';
-import { WalletDto } from './dto/wallet.dto';
+import { CreateWalletDto } from './dto/wallet.dto';
+import { WalletService } from './wallet.service';
 
-@Controller('wallet')
+@Controller('api')
 export class WalletController {
-  constructor(private bitcoin: BitcoinService) {}
+  constructor(private walletService: WalletService) {}
 
-  @Post('create_wallet')
-  createWallet(@Body() dto: WalletDto) {
-    console.log(dto);
+  @Post('create-wallet')
+  createWallet(@Body() dto: CreateWalletDto) {
+    return this.walletService.createWallet({
+      wallet_id: dto.wallet_id,
+      passphrase: dto.passphrase,
+    });
   }
 
-  @Get('get_address')
-  getAddress() {
-    console.log('Get Address');
+  @Get('get-wallet-address')
+  getWalletAddress(@Body() dto: GetWalletAddress) {
+    return this.walletService.getWalletAddress(dto.wallet_id);
   }
 
-  @Post('send_transaction')
+  @Get('get-wallet-info')
+  getWalletInfo(@Body() dto: GetWalletInfo) {
+    return this.walletService.getWalletInfo(dto.wallet_id);
+  }
+
+  @Get('get-wallet-balance')
+  getBalance(@Body() dto: GetWalletBalance) {
+    return this.walletService.getWalletInfo(dto.wallet_id);
+  }
+
+  @Get('get-wallet-privatekey')
+  getPrivateKey(@Body() dto: GetPrivateKey) {
+    return this.walletService.getPrivateKey({
+      wallet_id: dto.wallet_id,
+      passphrase: dto.passphrase,
+      address: dto.address,
+    });
+  }
+
+  @Post('send-to-address')
   sendTransaction(@Body() dto: SendTransaction) {
     console.log(dto);
   }
 
-  @Get('get_balance')
-  getBalance() {
-    console.log('Get Balance');
-  }
-
-  @Get('get_transactions')
+  @Get('get-transactions')
   getTransactions() {
     console.log('get transactions');
   }

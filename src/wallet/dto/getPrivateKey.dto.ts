@@ -6,4 +6,7 @@ export class CreateWalletDto {
 
   @IsString()
   passphrase: string;
+
+  @IsString()
+  address: string;
 }
