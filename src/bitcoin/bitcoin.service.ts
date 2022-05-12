@@ -52,8 +52,6 @@ export class BitcoinService {
       ? `${this.getBaseUrl(type)}/${uri}`
       : this.getBaseUrl(type);
 
-    console.log(apiUrl);
-
     const response = await firstValueFrom(
       this.httpService.request({
         url: apiUrl,
@@ -115,7 +113,7 @@ export class BitcoinService {
     try {
       const result = await this.sendAPIrequest({
         method: 'GET',
-        uri: `/wallet/${wallet_id}`,
+        uri: `/btc-wallet/${wallet_id}`,
         type: 'wallet',
       });
 
@@ -127,7 +125,7 @@ export class BitcoinService {
     try {
       const result = await this.sendAPIrequest({
         method: 'GET',
-        uri: `/wallet/${wallet_id}/balance`,
+        uri: `/btc-wallet/${wallet_id}/balance`,
         type: 'wallet',
       });
 
@@ -143,7 +141,7 @@ export class BitcoinService {
     try {
       const result = await this.sendAPIrequest({
         method: 'GET',
-        uri: `/wallet/${wallet_id}/wif/${address}?passphrase=${passphrase}`,
+        uri: `/btc-wallet/${wallet_id}/wif/${address}?passphrase=${passphrase}`,
         type: 'wallet',
       });
 
@@ -151,12 +149,63 @@ export class BitcoinService {
     } catch (error) {}
   }
 
-  sendBTCtoAddress() {
-    console.log('Send BTC');
+  async sendTransaction({
+    wallet_id,
+    passphrase,
+    rate,
+    value,
+    destination_address,
+  }) {
+    try {
+      const result = await this.sendAPIrequest({
+        method: 'POST',
+        uri: `/btc-wallet/${wallet_id}/send`,
+        data: {
+          rate: rate ?? 1000,
+          passphrase,
+          outputs: [{ address: destination_address, value }],
+        },
+        type: 'wallet',
+      });
+
+      return result;
+    } catch (error) {}
   }
 
-  getTransactions() {
-    console.log('Get transactions');
+  async getWalletTransactions(wallet_id: string) {
+    try {
+      const result = await this.sendAPIrequest({
+        method: 'GET',
+        uri: `/btc-wallet/${wallet_id}/tx/history`,
+        type: 'wallet',
+      });
+
+      return result;
+    } catch (error) {}
+  }
+
+  async getTransactionsDetails({ wallet_id, tx_hash }) {
+    try {
+      const result = await this.sendAPIrequest({
+        method: 'GET',
+        uri: `/btc-wallet/${wallet_id}/tx/${tx_hash}`,
+        type: 'wallet',
+      });
+
+      return result;
+    } catch (error) {}
+  }
+
+  async getWalletCoins(wallet_id: string) {
+    try {
+      const result = await this.sendAPIrequest({
+        method: 'GET',
+        uri: `/btc-wallet/${wallet_id}/coin`,
+        type: 'wallet',
+      });
+
+      return result;
+    } catch (error) {}
   }
 
   getRawTransaction(id) {

@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CreateWalletDto {
+export class GetPrivateKeyDto {
   @IsString()
   wallet_id: string;
 

@@ -3,15 +3,16 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BitcoinModule } from './bitcoin/bitcoin.module';
-import { WalletModule } from './wallet/wallet.module';
+import { BTCWalletModule } from './btc-wallet/btc-wallet.module';
+import { LoggerService } from './services/logger.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     BitcoinModule,
-    WalletModule,
+    BTCWalletModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LoggerService],
 })
 export class AppModule {}
