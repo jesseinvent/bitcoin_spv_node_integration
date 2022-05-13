@@ -29,8 +29,19 @@ export class BTCWalletService {
     });
 
     walletSocket.bind('tx', (walletID: any, details: any) => {
-      // console.log('New transaction recieved');
       this.logger.info('New transaction recieved');
+      this.logger.info(`Wallet ID: ${walletID}`);
+      this.logger.json(details);
+    });
+
+    walletSocket.bind('confirmed', (walletID: any, details: any) => {
+      this.logger.info('A transaction was just confirmed');
+      this.logger.info(`Wallet ID: ${walletID}`);
+      this.logger.json(details);
+    });
+
+    walletSocket.bind('unconfirmed', (walletID: any, details: any) => {
+      this.logger.info('A transaction was just confirmed');
       this.logger.info(`Wallet ID: ${walletID}`);
       this.logger.json(details);
     });
@@ -43,37 +54,27 @@ export class BTCWalletService {
     wallet_id: string;
     passphrase: string;
   }) {
-    try {
-      const result = await this.bitcoinService.createWallet({
-        wallet_id,
-        passphrase,
-      });
+    const result = await this.bitcoinService.createWallet({
+      wallet_id,
+      passphrase,
+    });
 
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
+    return result;
   }
 
   async getWalletAddress(wallet_id: string) {
-    try {
-      const result = await this.bitcoinService.getWalletAddress(wallet_id);
-      return result;
-    } catch (error) {}
+    const result = await this.bitcoinService.getWalletAddress(wallet_id);
+    return result;
   }
 
   async getWalletInfo(wallet_id: string) {
-    try {
-      const result = await this.bitcoinService.getWalletInfo(wallet_id);
-      return result;
-    } catch (error) {}
+    const result = await this.bitcoinService.getWalletInfo(wallet_id);
+    return result;
   }
 
   async getBalance(wallet_id: string) {
-    try {
-      const result = await this.bitcoinService.getBalance(wallet_id);
-      return result;
-    } catch (error) {}
+    const result = await this.bitcoinService.getBalance(wallet_id);
+    return result;
   }
 
   async getPrivateKey({ wallet_id, address, passphrase }) {

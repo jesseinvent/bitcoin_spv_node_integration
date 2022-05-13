@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ApiRequest } from './interfaces/apiRequest.interface';
 import { CreateBitcoinWallet } from './interfaces/createWallet.interface';
@@ -74,7 +74,8 @@ export class BitcoinService {
 
       return response;
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
     }
   }
 
@@ -93,7 +94,10 @@ export class BitcoinService {
       });
 
       return wallet;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async getWalletAddress(wallet_id: string) {
@@ -106,7 +110,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async getWalletInfo(wallet_id: string) {
@@ -118,7 +125,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async getBalance(wallet_id: string) {
@@ -130,7 +140,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async getPrivateKeyByAddress({
@@ -146,7 +159,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async sendTransaction({
@@ -169,7 +185,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async getWalletTransactions(wallet_id: string) {
@@ -181,7 +200,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async getTransactionsDetails({ wallet_id, tx_hash }) {
@@ -193,7 +215,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   async getWalletCoins(wallet_id: string) {
@@ -205,7 +230,10 @@ export class BitcoinService {
       });
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response.data);
+      throw new UnprocessableEntityException(error.response.data);
+    }
   }
 
   getRawTransaction(id) {
